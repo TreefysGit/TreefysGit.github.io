@@ -1,14 +1,136 @@
 <html>
     <head>
-        <title>Muffin Clicker: The muffins</title>
+        <title>Muffin Clicker: The muffining</title>
+
+        <style>
+            .sectionLeft {
+                float: left;
+                width: 80%;
+            }
+
+            .sectionRight {
+                float: right;
+                width: 20%;
+            }
+
+            .scoreContainer {
+                background-color: rgb(238, 238, 238, 0.6);
+                width: 50%;
+                padding: 10px;
+                border-radius: 10px;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .clickerContainer img {
+                position: relative;
+                transition: all .2s ease-in-out;
+            }
+
+            .clickerContainer img:hover { transform: scale(1.10); }
+            .clickerContainer img:active { transform: scale(0.99); }
+
+            .shopButton {
+                background-color: #b5b5b5;
+                transition: all .2s ease-in-out;
+                border-radius: 10px;
+                width: 100%;
+                margin: 10px 0px 10px 0px;
+            }
+
+            .shopButton:hover {
+                background-color: #c7c7c7;
+                transition: all .2s ease-in-out;
+            }
+
+            .shopButton #image {
+                width: 25%;
+            }
+
+            .shopButton img {
+                height: 64px;
+                width: 64px;
+            }
+
+            .shopButton #nameAndCost p {
+                margin: 0px;
+                width: 60%;
+            }
+
+            .shopButton #nameAndCost p:first-of-type {
+                font-size: 24px;
+            }
+
+            .shopButton #amount {
+                font-size: 48px;
+                color: #595959;
+                font-family: roboto;
+                width: 15%;
+            }
+
+            .sectionFooter {
+                margin-top: 20%;
+            }
+
+            .unselectable {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none; /* if not using a chronium browser */
+                user-select: none;
+            }
+        </style>
     </head>
 
     <body>
-        <p>Score: <span id="score">0</span></p>
-        <img src="game/images/muffin.png" height="256px" width="256px" onclick="addToScore(clickingPower)">
+        <div class="sectionLeft unselectable">
+            <center>
+                <div class="scoreContainer unselectable">
+                    <span id="score">0</span> muffins<br>
+                    <span id="scorepersecond">0</span> muffins per second
+                </div>
+                <br>
+                <div class="clickerContainer unselectable">
+                    <img src="game/images/muffin.png" height="256px" width="256px" onclick="addToScore(clickingPower)">
+                </div>
+            </center>
 
-        <button onclick="buyCursor()">Cursor [<span id="cursorcost">15</span>] -- <span id="cursors">0</span></button>
-        <button onclick="buyGrandma()">Grandma [<span id="grandmacost">100</span>] -- <span id="grandmas">0</span></button>
+            <div class="sectionFooter">
+                <h5>Muffin Clicker: The muffining</h5>
+            </div>
+        </div>
+
+        <div class="sectionRight">
+            <table class="shopButton unselectable" onclick="buyCursor()">
+                <tr>
+                    <td id="image"><img src="game/images/cursor.png"></td>
+                    <td id="nameAndCost">
+                        <p>Cursor</p>
+                        <p><span id="cursorcost">15</span> muffins</p>
+                    </td>
+                    <td id="amount"><span id="cursors">0</span></td>
+                </tr>
+            </table>
+            <table class="shopButton unselectable" onclick="buyBaker()">
+                <tr>
+                    <td id="image"><img src="game/images/baker.png"></td>
+                    <td id="nameAndCost">
+                        <p>Baker</p>
+                        <p><span id="bakercost">100</span> muffins</p>
+                    </td>
+                    <td id="amount"><span id="bakers">0</span></td>
+                </tr>
+            </table>
+            <table class="shopButton" onclick="buyOven()">
+                <tr>
+                    <td id="image"><img src="game/images/oven.png"></td>
+                    <td id="nameAndCost">
+                        <p>Oven</p>
+                        <p><span id="bakercost">1000</span> muffins</p>
+                    </td>
+                    <td id="amount"><span id="ovens">0</span></td>
+                </tr>
+            </table>
+        </div>
 
         <script>
             var score = 0;
@@ -16,8 +138,10 @@
 
             var cursorCost = 15;
             var cursors = 0;
-            var grandmaCost = 100;
-            var grandmas = 0;
+            var bakerCost = 100;
+            var bakers = 0;
+            var ovenCost = 1000;
+            var ovens = 0;
 
             function buyCursor() {
                 if (score >= cursorCost) {
@@ -28,18 +152,33 @@
                     document.getElementById("score").innerHTML = score;
                     document.getElementById("cursorcost").innerHTML = cursorCost;
                     document.getElementById("cursors").innerHTML = cursors;
+                    updateScorePerSecond();
                 }
             }
             
-            function buyGrandma() {
-                if (score >= grandmaCost) {
-                    score = score - grandmaCost;
-                    grandmas = grandmas + 1;
-                    grandmaCost = Math.round(grandmaCost * 1.15);
+            function buyBaker() {
+                if (score >= bakerCost) {
+                    score = score - bakerCost;
+                    bakers = bakers + 1;
+                    bakerCost = Math.round(bakerCost * 1.15);
 
                     document.getElementById("score").innerHTML = score;
-                    document.getElementById("grandmacost").innerHTML = grandmaCost;
-                    document.getElementById("grandmas").innerHTML = grandmas;
+                    document.getElementById("bakercost").innerHTML = bakerCost;
+                    document.getElementById("bakers").innerHTML = bakers;
+                    updateScorePerSecond();
+                }
+            }
+            
+            function buyOven() {
+                if (score >= ovenCost) {
+                    score = score - ovenCost;
+                    ovens = ovens + 1;
+                    ovenCost = Math.round(ovenCost * 1.15);
+
+                    document.getElementById("score").innerHTML = score;
+                    document.getElementById("ovencost").innerHTML = ovenCost;
+                    document.getElementById("ovens").innerHTML = ovens;
+                    updateScorePerSecond();
                 }
             }
 
@@ -48,10 +187,18 @@
                 document.getElementById("score").innerHTML = score;
             }
 
+            function updateScorePerSecond() {
+                scorePerSeond = cursors + bakers * 5 + ovens * 70;
+                document.getElementById("scorepersecond").innerHTML = scorePerSeond;
+            }
+
             setInterval(function() {
                 score = score + cursors;
-                score = score + cursors + grandmas * 5;
+                score = score + bakers * 5;
+                score = score + ovens * 70;
                 document.getElementById("score").innerHTML = score;
+
+                document.title = score + " muffins - Muffin Clicker: The muffining";
             }, 1000); // 1000ms = 1 second
         </script>
     </body>
