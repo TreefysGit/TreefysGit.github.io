@@ -96,6 +96,7 @@
 
             <div class="sectionFooter">
                 <h5>Muffin Clicker: The muffining</h5>
+                <button onclick="resetGame()">Wipe Progress</button>
             </div>
         </div>
 
@@ -125,7 +126,7 @@
                     <td id="image"><img src="game/images/oven.png"></td>
                     <td id="nameAndCost">
                         <p>Oven</p>
-                        <p><span id="bakercost">1000</span> muffins</p>
+                        <p><span id="ovencost">1000</span> muffins</p>
                     </td>
                     <td id="amount"><span id="ovens">0</span></td>
                 </tr>
@@ -188,8 +189,54 @@
             }
 
             function updateScorePerSecond() {
-                scorePerSeond = cursors + bakers * 5 + ovens * 70;
-                document.getElementById("scorepersecond").innerHTML = scorePerSeond;
+                scorePerSecond = cursors + bakers * 5 + ovens * 70;
+                document.getElementById("scorepersecond").innerHTML = scorePerSecond;
+            }
+
+            function loadGame() {
+                var savedGame = JSON.parse(localStorage.getItem("gameSave"));
+                if (typeof savedGame.score !== "undefined") score = savedGame.score;
+                if (typeof savedGame.clickingPower !== "undefined") clickingPower = savedGame.clickingPower;
+                if (typeof savedGame.cursorCost !== "undefined") cursorCost = savedGame.cursorCost;
+                if (typeof savedGame.cursors !== "undefined") cursors = savedGame.cursors;
+                if (typeof savedGame.bakerCost !== "undefined") bakerCost = savedGame.bakerCost;
+                if (typeof savedGame.bakers !== "undefined") bakers = savedGame.bakers;
+                if (typeof savedGame.ovenCost !== "undefined") ovenCost = savedGame.ovenCost;
+                if (typeof savedGame.ovens !== "undefined") ovens = savedGame.ovens;
+            }
+
+            function saveGame() {
+                var gameSave = {
+                    score: score,
+                    clickingPower: clickingPower,
+                    cursorCost: cursorCost,
+                    cursors: cursors,
+                    bakerCost: bakerCost,
+                    bakers: bakers,
+                    ovenCost: ovenCost,
+                    ovens: ovens
+                };
+                localStorage.setItem("gameSave", JSON.stringify(gameSave));
+            }
+
+            function resetGame() {
+                if(confirm("Are you sure you want to wipe your save?")) {
+                    var gameSave = {};
+                    localStorage.setItem("gameSave", JSON.stringify(gameSave));
+                    location.reload();
+                }
+            }
+
+            window.onload = function() {
+                loadGame();
+                updateScorePerSecond();
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("cursorcost").innerHTML = cursorCost;
+                document.getElementById("cursors").innerHTML = cursors;
+                document.getElementById("bakercost").innerHTML = bakerCost;
+                document.getElementById("bakers").innerHTML = bakers;
+                document.getElementById("ovencost").innerHTML = ovenCost;
+                document.getElementById("ovens").innerHTML = ovens;
             }
 
             setInterval(function() {
@@ -200,6 +247,17 @@
 
                 document.title = score + " muffins - Muffin Clicker: The muffining";
             }, 1000); // 1000ms = 1 second
+
+            setInterval(function() {
+                saveGame();
+            }, 5000); // 5000ms = 5 seconds
+
+            document.addEventListener("keydown", function(event) {
+                if (event.ctrlKey && event.which == 83) { // CTRL + S
+                    event.preventDefault();
+                    saveGame();
+                }
+            }, false);
         </script>
     </body>
 </html>
