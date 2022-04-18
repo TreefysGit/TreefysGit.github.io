@@ -73,3 +73,8 @@
     -ms-user-select: none; /* if not using a chronium browser */
     user-select: none;
 }
+
+#upgradeContainer img {
+    height: 64px;
+    width: 64px;
+}
