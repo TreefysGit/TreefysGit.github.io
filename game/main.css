@@ -17,13 +17,33 @@
     font-weight: bold;
 }
 
-.clickerContainer img {
+ /* .clickerContainer img {
     position: relative;
     transition: all .2s ease-in-out;
 }
 
 .clickerContainer img:hover { transform: scale(1.10); }
-.clickerContainer img:active { transform: scale(0.99); }
+.clickerContainer img:active { transform: scale(0.99); } */
+
+#clicker {
+    background-image: url("../game/middlePiece/muffin.png");
+    background-size: contain;
+    position: relative;
+    transition: all .2s ease-in-out;
+    height: 256px;
+    width: 256px;
+}
+
+#clicker:hover { transform: scale(1.10); }
+#clicker:active { transform: scale(0.99); }
+
+#clicker > .number {
+    z-index: 99;
+    font-size: 24px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    position: absolute;
+}
 
 .shopButton {
     background-color: #b5b5b5;

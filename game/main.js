@@ -257,9 +257,65 @@ function resetGame() {
     }
 }
 
-document.getElementById("clicker").addEventListener("click", function() {
+function randomNumber(min, max) {
+    return Math.round(Math.random() * (max - min) + min)
+}
+
+function fadeOut(element, duration, finalOpacity, callback) {
+    opacity = 1;
+
+    let elementFadingInterval = window.setInterval(function() {
+        opacity -= 50 / duration;
+
+        if (opacity <= finalOpacity) {
+            clearInterval(elementFadingInterval);
+            callback();
+        }
+
+        element.style.opacity = opacity;
+    }, 50);
+}
+
+function createNumberOnClicker(event) {
+    // Grab the clicker
+    let clicker = document.getElementById("clicker");
+
+    // Grab the position on where the clicker was clicked
+    let clickerOffset = clicker.getBoundingClientRect();
+    let position = {
+        x: event.pageX - clickerOffset.left + randomNumber(-5, 5),
+        y: event.pageY = clickerOffset.top
+    };
+
+    // Create the number
+    let element = document.createElement("div");
+    element.textContent = "+" + game.clickValue;
+    element.classList.add("number", "unselectable");
+    element.style.left = position.x + "px";
+    element.style.top = position.y + "px";
+
+    // Add the number to the clicker
+    clicker.appendChild(element);
+
+    // Slowly rise the element
+    let movementInterval = window.setInterval(function() {
+        if (typeof element == "undefined" && element == null) clearInterval(movementInterval);
+
+        position.y--;
+        element.style.top = position.y + "px";
+    }, 10); // 10ms = 0.0
+
+    // Slowly fade out the element
+    fadeOut(element, 3000, 0.5, function() {
+        element.remove();
+    });
+}
+
+document.getElementById("clicker").addEventListener("click", function(event) {
     game.totalClicks++;
     game.addToScore(game.clickValue);
+
+    createNumberOnClicker(event);
 }, false);
 
 window.onload = function() {
@@ -276,7 +332,7 @@ setInterval(function() {
         else if (achievement.type[i] == "click" && game.totalClicks >= achievement.requirement[i]) achievement.earn(i);
         else if (achievement.type[i] == "building" && building.count[achievement.objectIndex[i]] >= achievement.requirement[i]) achievement.earn(i);
     }
-    
+
     game.score += game.getScorePerSecond();
     game.totalScore += game.getScorePerSecond();
     display.updateScore();
