@@ -189,10 +189,10 @@ var display = {
     },
 
     updateAchievements: function() {
-        document,getElementById("achievementContainer").innerHTML = "";
+        document.getElementById("achievementContainer").innerHTML = "";
         for (i = 0; i < achievement.name.length; i++) {
             if (achievement.awarded[i]) {
-                document,getElementById("achievementContainer").innerHTML += '<img src="game/achievements/'+achievement.image[i]+' title="'+achievement.name[i]+' &#10; '+achievement.description[i]+'">';
+                document.getElementById("achievementContainer").innerHTML += '<img src="game/achievements/'+achievement.image[i]+'" title="'+achievement.name[i]+' &#10; '+achievement.description[i]+'">'
             }
         }
     }

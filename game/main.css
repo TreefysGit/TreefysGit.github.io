@@ -26,7 +26,7 @@
 .clickerContainer img:active { transform: scale(0.99); } */
 
 #clicker {
-    background-image: url("../game/middlePiece/muffin.png");
+    background-image: url("./middlePiece/muffin.png");
     background-size: contain;
     position: relative;
     transition: all .2s ease-in-out;
