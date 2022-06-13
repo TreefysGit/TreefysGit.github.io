@@ -3,7 +3,7 @@ var game = {
     totalScore: 0,
     totalClicks: 0,
     clickValue: 1,
-    version: 1.004,
+    version: 1.005,
 
     addToScore: function(amount) {
         this.score += amount;
@@ -25,26 +25,30 @@ var building = {
         "Cursor",
         "Baker",
         "Oven",
-        "Chocolate Mine"
+        "Chocolate Mine",
+        "Muffin Factory"
     ],
     image: [
         "cursor.png",
         "baker.png",
         "oven.png",
-        "chocolate-mine.png"
+        "chocolate-mine.png",
+        "muffin-factory.png"
     ],
-    count: [0, 0, 0, 0],
+    count: [0, 0, 0, 0, 0],
     income: [
         1,
         5,
         70,
-        200
+        200,
+        1000
     ],
     cost: [
         15,
         100,
         1000,
-        5000
+        5000,
+        25000
     ],
 
     purchase: function(index) {
@@ -63,44 +67,52 @@ var upgrade = {
     name: [
         "Stone Fingers",
         "Iron Fingers",
-        "Stone Clicker"
+        "Stone Clicker",
+        "Crazy Bakers"
     ],
     description: [
         "Cursors are twice as efficient.",
         "Cursors are twice as efficient.",
-        "Your clicks are twice as efficient."
+        "Your clicks are twice as efficient.",
+        "Bakers are twice as efficient."
     ],
     image: [
         "stonefingers.png",
         "ironfingers.png",
-        "stoneclicker.png"
+        "stoneclicker.png",
+        "crazybakers.png"
     ],
     type: [
         "building",
         "building",
-        "click"
+        "click",
+        "building"
     ],
     cost: [
         300,
         500,
-        300
+        300,
+        500
     ],
     buildingIndex: [
        0,
        0,
-       -1
+       -1,
+       1
     ],
     requirement: [
         1,
         5,
+        1,
         1
     ],
     bonus: [
         2,
         2,
+        2,
         2
     ],
-    purchased: [false, false, false],
+    purchased: [false, false, false, false],
 
     purchase: function(index) {
         if (!this.purchased[index] && game.score >= this.cost[index]) {
@@ -127,24 +139,29 @@ var achievement = {
     name: [
         "Stone Fingers",
         "A Humble Start",
-        "Fingertastic"
+        "Fingertastic",
+        "A new baker"
     ],
     description: [
         "Buy 1 cursor.",
         "Gather 1 muffin.",
-        "Click the big muffin 1 time."
+        "Click the big muffin 1 time.",
+        "Hire a baker."
     ],
     image: [
         "stonefingers.png",
         "ahumblestart.png",
-        "fingertastic.png"
+        "fingertastic.png",
+        "anewbaker.png"
     ],
     type: [
         "building",
         "score",
-        "click"
+        "click",
+        "building"
     ],
     requirement: [
+        1,
         1,
         1,
         1
@@ -152,9 +169,10 @@ var achievement = {
     objectIndex: [
         0,
         -1,
-        -1
+        -1,
+        1
     ],
-    awarded: [false, false, false],
+    awarded: [false, false, false, false],
 
     earn: function(index) {
         this.awarded[index] = true;
